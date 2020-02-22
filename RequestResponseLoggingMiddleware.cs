@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -32,17 +33,14 @@ namespace WebApiSerilog
                 //...and use that for the temporary response body
                 context.Response.Body = responseBody;
 
-                //Continue down the Middleware pipeline, eventually returning to this class
+                _logger.LogInformation(request);
+
                 await _next(context);
 
                 //Format the response from the server
                 var response = await FormatResponse(context.Response);
-
-                //TODO: Save log to chosen datastore
-
-                _logger.LogInformation(request);
                 _logger.LogInformation(response);
-
+                
                 //Copy the contents of the new memory stream (which contains the response) to the original stream, which is then returned to the client.
                 await responseBody.CopyToAsync(originalBodyStream);
             }

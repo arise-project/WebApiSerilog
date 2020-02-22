@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration.FileExtensions;
 using Microsoft.Extensions.Configuration.Json;
 using Serilog;
+using System.Threading.Tasks;
 
 namespace WebApiSerilog
 {
@@ -41,14 +42,18 @@ namespace WebApiSerilog
             {
                 app.UseDeveloperExceptionPage();
             }
-            
-            //app.UseMiddleware<RequestLoggingMiddleware>();
 
-            app.UseMiddleware<RequestResponseLoggingMiddleware>();
+            app.UseMiddleware<LoggingScopeMiddleware>();
+
+            app.UseMiddleware<RequestLoggingMiddleware>();
+
+            //app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             app.UseRouting();
 
             app.UseAuthorization();
+
+            
 
             app.UseEndpoints(endpoints =>
             {
