@@ -42,9 +42,9 @@ namespace WebApiSerilog
                 app.UseDeveloperExceptionPage();
             }
             
-            app.UseMiddleware<RequestLoggingMiddleware>();
+            //app.UseMiddleware<RequestLoggingMiddleware>();
 
-            //app.UseMiddleware<RequestResponseLoggingMiddleware>();
+            app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             app.UseRouting();
 
